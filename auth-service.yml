@@ -16,8 +16,8 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/bytebites_platform_users
     driver-class-name: org.postgresql.Driver
-    username: ${DB_USER:postgres}
-    password: ${DB_PASSWORD:postgres}
+    username: postgres
+    password: postgres
 
 
   jpa:
@@ -37,8 +37,8 @@ eureka:
 
 # JWT Configuration
 jwt:
-  secret: ${JWT_SECRET:mySecretKey1234iyahfauhiaiiyryeiyauifaidyjhy647383ahakjhfjapaadkahdkjs}
-  expiration: ${JWT_EXPIRATION:86400000}
+  secret: mySecretKey1234iyahfauhiaiiyryeiyauifaidyjhy647383ahakjhfjapaadkahdkjs
+  expiration: 86400000
 
 # Swagger/OpenAPI
 springdoc:
