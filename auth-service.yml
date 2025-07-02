@@ -1,24 +1,13 @@
 server:
-  port: 8081
+  port: 8081 # You can also specify this here, but bootstrap.yml can override it for local testing
 
+# Database configuration
 spring:
-  application:
-    name: auth-service
-  config:
-    import: configserver:http://localhost:8888
-  cloud:
-    config:
-      name: auth-service
-      profile: default
-      label: main
-
-  # Database configuration
   datasource:
     url: jdbc:postgresql://localhost:5432/bytebites_platform_users
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: postgres
-
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -37,8 +26,8 @@ eureka:
 
 # JWT Configuration
 jwt:
-  secret: mySecretKey1234iyahfauhiaiiyryeiyauifaidyjhy647383ahakjhfjapaadkahdkjs
-  expiration: 86400000
+  secret: ${JWT_SECRET:mySecretKey1234iyahfauhiaiiyryeiyauifaidyjhy647383ahakjhfjapaadkahdkjs}
+  expiration: ${JWT_EXPIRATION:86400000}
 
 # Swagger/OpenAPI
 springdoc:
