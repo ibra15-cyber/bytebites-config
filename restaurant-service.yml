@@ -1,24 +1,44 @@
 server:
   port: 8082
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+  # Database configuration
 spring:
   datasource:
-    url: jdbc:h2:mem:authdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: password
+    url: jdbc:postgresql://localhost:5432/bytebites_platform_restaurants
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+
 
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
+
+# JWT Configuration
 jwt:
-  secret: mySecretKey
-  expiration: 86400000
+  secret: ${JWT_SECRET:mySecretKey1234iyahfauhiaiiyryeiyauifaidyjhy647383ahakjhfjapaadkahdkjs}
+  expiration: ${JWT_EXPIRATION:86400000}
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
+# Swagger/OpenAPI
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    com.bytebites.auth: DEBUG
+    org.springframework.security: DEBUG
