@@ -21,22 +21,19 @@ spring:
               uri: lb://restaurant-service
               predicates:
                 - Path=/api/restaurants/**
-              filters:
-                - JwtAuth
+
 
             - id: order-service
               uri: lb://order-service
               predicates:
                 - Path=/api/orders/**
-              filters:
-                - JwtAuth
+
 
             - id: admin-routes
               uri: lb://auth-service # Assuming admin routes also live in auth-service
               predicates:
                 - Path=/admin/**
-              filters:
-                - JwtAuth #
+
 
 
 jwt:
