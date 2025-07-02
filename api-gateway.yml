@@ -26,8 +26,8 @@ spring:
                 - Path=/api/orders/**
 
 jwt:
-  secret: ${JWT_SECRET:mySecretKey1234iyahfauhiaiiyryeiyauifaidyjhy647383ahakjhfjapaadkahdkjs}
-  expiration: ${JWT_EXPIRATION:86400000}
+  secret: mySecretKey1234iyahfauhiaiiyryeiyauifaidyjhy647383ahakjhfjapaadkahdkjs
+  expiration: 86400000
 
 logging:
   level:
