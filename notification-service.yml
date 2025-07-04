@@ -38,6 +38,21 @@ eureka:
     stream:
       virtual-host: /
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: 152512@gmail.com
+    password: iaberrorlmilljsr
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            trust: smtp.gmail.com
+
 #
 # JWT Configuration
 jwt:
@@ -45,9 +60,12 @@ jwt:
   expiration: ${JWT_EXPIRATION:86400000}
 
 app:
+  email:
+    company-name: ByteBites
+
   rabbitmq:
-    exchange: bytebites.exchange
-    routingkey: bytebites.order
+    exchange: order.exchange
+    routingkey: order.notification
 
 resilience4j:
   circuitbreaker:
