@@ -6,27 +6,7 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-#  # Database configuration
-#spring:
-#  datasource:
-#    url: jdbc:postgresql://localhost:5432/bytebites_platform_orders
-#    driver-class-name: org.postgresql.Driver
-#    username: ${DB_USER:postgres}
-#    password: ${DB_PASSWORD:postgres}
-#
-#
-#  jpa:
-#    database-platform: org.hibernate.dialect.PostgreSQLDialect
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        format_sql: true
-#        dialect: org.hibernate.dialect.PostgreSQLDialect
-#
-
-
+spring:
   rabbitmq:
     host: localhost
     port: 5672
@@ -34,49 +14,51 @@ eureka:
     password: guest
     listener:
       simple:
-        acknowledge-mode: auto
-    stream:
-      virtual-host: /
+        acknowledge-mode: auto # Auto-acknowledgment for simplicity
+    # stream: # Remove stream config if not using RabbitMQ Streams
+    #   virtual-host: /
 
   mail:
     host: smtp.gmail.com
-    port: 465
+    port: 465 # Changed to 587 for STARTTLS
     username: 152512sch@gmail.com
     password: iaberrorlmilljsr
-
     properties:
       mail:
         smtp:
-          timeout: 5000
-          writetimeout: 5000
-          connectiontimeout: 5000
-          retry:
-            enable: true
-          maxretries: 3
-          initialretrydelay: 1000
-          retryinterval: 2000
-
           auth: true
-          socketFactory:
-            port: 465
-            class: javax.net.ssl.SSLSocketFactory
-            fallback: false
-          ssl:
-            enable: true
+          starttls:
+            enable: true # Enable STARTTLS for port 587
+          # Removed specific socketFactory and ssl.enable for port 465, as 587 with STARTTLS is standard
+          # timeout: 5000 # Optional: connection/read timeouts
+          # writetimeout: 5000
+          # connectiontimeout: 5000
+          # retry: # These are mail client-side retry properties, not RabbitMQ
+          #   enable: true
+          # maxretries: 3
+          # initialretrydelay: 1000
+          # retryinterval: 2000
 
-#
-# JWT Configuration
-jwt:
-  secret: ${JWT_SECRET:mySecretKey1234iyahfauhiaiiyryeiyauifaidyjhy647383ahakjhfjapaadkahdkjs}
-  expiration: ${JWT_EXPIRATION:86400000}
+#          properties:
+#            mail:
+#              smtp:
+#                timeout: 5000
+#                writetimeout: 5000
+#                connectiontimeout: 5000
+#                retry:
+#                  enable: true
+#                maxretries: 3
+#                initialretrydelay: 1000
+#                retryinterval: 2000
+
 
 app:
   email:
     company-name: ByteBites
 
   rabbitmq:
-    exchange: order.exchange
-    routingkey: order.notification
+    # This queue name must match the queue bound in order-service's RabbitMQConfig
+    notification-queue-name: notification.order.queue
 
 resilience4j:
   circuitbreaker:
@@ -102,7 +84,6 @@ resilience4j:
         enable-exponential-backoff: true
         exponential-backoff-multiplier: 2
 
-
 management:
   endpoints:
     web:
@@ -113,13 +94,10 @@ management:
     health:
       show-details: always
 
-
   health:
     circuitbreakers:
       enabled: true
 
-
-# Swagger/OpenAPI
 springdoc:
   api-docs:
     path: /v3/api-docs
@@ -128,10 +106,9 @@ springdoc:
 
 logging:
   level:
-    com.ibra.orderservice: DEBUG
+    com.ibra.notificationservice: DEBUG # Changed to notification service package
     org.springframework.security: DEBUG
     org.springframework.web: DEBUG
     feign: DEBUG
   pattern:
     console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
-

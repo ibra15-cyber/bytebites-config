@@ -6,14 +6,12 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-  # Database configuration
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/bytebites_platform_orders
     driver-class-name: org.postgresql.Driver
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:postgres}
-
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -25,7 +23,6 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-
   openfeign:
     client:
       default-config: default
@@ -35,8 +32,8 @@ spring:
     port: 5672
     username: guest
     password: guest
-    stream:
-      virtual-host: /
+    # stream: # Remove stream config if not using RabbitMQ Streams
+    #   virtual-host: /
 
   security:
     oauth2:
@@ -44,16 +41,19 @@ spring:
         jwt:
           issuer-uri: http://localhost:8081/auth/realms/bytebites
 
-#
-# JWT Configuration
 jwt:
   secret: ${JWT_SECRET:mySecretKey1234iyahfauhiaiiyryeiyauifaidyjhy647383ahakjhfjapaadkahdkjs}
   expiration: ${JWT_EXPIRATION:86400000}
 
 app:
   rabbitmq:
-    exchange: bytebites.exchange
-    routingkey: bytebites.order
+  # These are the properties used by OrderEventPublisher for exchange and routing keys
+  # The actual exchange and routing key constants are defined in RabbitMQConfig.java
+  # These app-level properties are more for general configuration,
+  # but the RabbitMQConfig.java constants are the source of truth for bindings.
+  # You can remove these if they are not directly used by any other part of the app config.
+  # exchange: bytebites.exchange # This is now defined in RabbitMQConfig.ORDER_EXCHANGE
+  # routingkey: bytebites.order # This is now defined in RabbitMQConfig.ORDER_ROUTING_KEY_PLACED etc.
 
 resilience4j:
   circuitbreaker:
@@ -79,7 +79,6 @@ resilience4j:
         enable-exponential-backoff: true
         exponential-backoff-multiplier: 2
 
-
 management:
   endpoints:
     web:
@@ -90,13 +89,10 @@ management:
     health:
       show-details: always
 
-
   health:
     circuitbreakers:
       enabled: true
 
-
-# Swagger/OpenAPI
 springdoc:
   api-docs:
     path: /v3/api-docs
@@ -111,4 +107,3 @@ logging:
     feign: DEBUG
   pattern:
     console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
-
