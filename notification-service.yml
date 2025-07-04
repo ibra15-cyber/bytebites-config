@@ -41,7 +41,7 @@ eureka:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: 152512@gmail.com
+    username: 152512sch@gmail.com
     password: iaberrorlmilljsr
     properties:
       mail:
